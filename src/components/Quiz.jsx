@@ -43,7 +43,7 @@ export default function Quiz() {
     }, []);
 
     if (quizIsComplete) {
-        return <Summary />;
+        return <Summary userAnswers={userAnswers} />;
     }
 
     return (

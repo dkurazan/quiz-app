@@ -4,15 +4,12 @@ export default function QuestionTimer({ timeout, onTimeout, mode }) {
     const [timeWasted, setTimeWasted] = useState(timeout);
 
     useEffect(() => {
-        console.log("set timeout");
         const timer = setTimeout(onTimeout, timeout);
 
         return () => clearTimeout(timer);
     }, [timeout, onTimeout]);
 
     useEffect(() => {
-        console.log("set interval");
-
         const interval = setInterval(() => {
             setTimeWasted((prevTime) => prevTime - 50);
         }, 50);
