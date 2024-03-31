@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import QUESTIONS from "../questions.js";
 import Summary from "./Summary.jsx";
 import QuestionTimer from "./QuestionTimer.jsx";
+import Answers from "./Answers.jsx";
 
 export default function Quiz() {
     const [userAnswers, setUserAnswers] = useState([]);
@@ -37,43 +38,22 @@ export default function Quiz() {
         return <Summary />;
     }
 
-    const shuffledAnswers = [...QUESTIONS[activeQuestionIndex].answers];
-    shuffledAnswers.sort(() => Math.random() - 0.5);
-
     return (
         <div id="quiz">
-            <div id="question">
+            <div id="question" key={activeQuestionIndex}>
                 <QuestionTimer
-                    key={activeQuestionIndex}
+                    
                     timeout={10000}
                     onTimeout={handleTimeout}
                 />
                 <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
-                <ul id="answers">
-                    {shuffledAnswers.map((answer) => {
-                        const isSellected = answer === userAnswers[userAnswers.length - 1]
-                        let cssClasses = '';
-
-                        if(answerState === 'answered') {
-                            cssClasses = 'selected';
-                        } else if (answerState === 'wrong') {
-                            cssClasses = 'wrong';
-                        } else if (answerState === 'correct') {
-                            cssClasses = 'correct';
-                        }
-
-                        return (
-                            <li key={answer} className="answer">
-                                <button
-                                    className={isSellected && cssClasses}
-                                    onClick={() => handleSelectAnswer(answer)}
-                                >
-                                    {answer}
-                                </button>
-                            </li>
-                        );
-                    })}
-                </ul>
+                <Answers
+                    
+                    answers={QUESTIONS[activeQuestionIndex].answers}
+                    selectedAnswer={userAnswers[userAnswers.length - 1]}
+                    answerState={answerState}
+                    onGetAnswer={handleSelectAnswer}
+                />
             </div>
         </div>
     );
