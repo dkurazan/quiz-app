@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import QUESTIONS from "../questions.js";
 import Summary from "./Summary.jsx";
 import QuestionTimer from "./QuestionTimer.jsx";
@@ -7,6 +7,14 @@ import Answers from "./Answers.jsx";
 export default function Quiz() {
     const [userAnswers, setUserAnswers] = useState([]);
     const [answerState, setAnswerState] = useState("");
+
+    let timer = 10000;
+
+    if (answerState === "answered") {
+        timer = 1000;
+    } else if (answerState === "correct" || answerState === "wrong") {
+        timer = 2000;
+    }
 
     const activeQuestionIndex =
         answerState === "" ? userAnswers.length : userAnswers.length - 1;
@@ -42,13 +50,13 @@ export default function Quiz() {
         <div id="quiz">
             <div id="question" key={activeQuestionIndex}>
                 <QuestionTimer
-                    
-                    timeout={10000}
-                    onTimeout={handleTimeout}
+                    key={timer}
+                    timeout={timer}
+                    onTimeout={answerState === '' ? handleTimeout : null}
+                    mode={answerState}
                 />
                 <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
                 <Answers
-                    
                     answers={QUESTIONS[activeQuestionIndex].answers}
                     selectedAnswer={userAnswers[userAnswers.length - 1]}
                     answerState={answerState}
