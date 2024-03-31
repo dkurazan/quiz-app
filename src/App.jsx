@@ -5,9 +5,11 @@ function App() {
     return (
         <>
             <Header />
-            <Quiz />
+            <main>
+                <Quiz />
+            </main>
         </>
-    )
+    );
 }
 
 export default App;
